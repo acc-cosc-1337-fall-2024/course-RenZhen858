@@ -1,8 +1,27 @@
 //write include statements
-
+#include "repetition.h"
 //write using statements
+using std::cout; using std::cin; using std::string;
 
-int main() 
+enum menu_option {factorial, gcd, exit};
+
+string menu_options(int num) 
 {
-	return 0;
+	string option = "";
+
+	switch (num)
+	{
+	case 1:
+	    option = "Option 1";
+		break;
+	case 2:
+	    option = "Option 2";
+		break;
+	case 3:
+	    option = "Option 3";
+		cout<<"Are you sure you want to exit?";
+		cin>>option;
+		break;
+	}
+	return option;
 }
