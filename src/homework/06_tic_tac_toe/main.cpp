@@ -1,31 +1,31 @@
-#include "tic_tac_toe.h"
 #include <iostream>
+#include "tic_tac_toe.h"
 
-int main() 
-{
-	TicTacToe game;
-    std::string first_player;
+int main() {
+    char play_again;
+    do {
+        std::string first_player;
+        do {
+            std::cout << "Choose first player (X or O): ";
+            std::cin >> first_player;
+        } while (first_player != "X" && first_player != "O");
 
-    std::cout << "Enter first player (X/O): ";
-    std::cin >> first_player;
-
-    game.start_game(first_player);
-    
-    while (true) {
-        game.display_board();
-        if (game.game_over()) {
-            std::cout << "Game over! The board is full." << std::endl;
-            std::cout << "Starting a new game..." << std::endl;
-            game.start_game(first_player); // Restart game
-            continue; // Go to the next iteration
+        TicTacToe game;
+        game.start_game(first_player);
+        while (!game.game_over()) {
+            game.display_board();
+            int position;
+            std::cout << "Player " << game.get_player() << ", enter your move (1-9): ";
+            std::cin >> position;
+            game.mark_board(position);
         }
         
-        int position;
-        std::cout << "Player " << game.get_player() << ", enter position (1-9): ";
-        std::cin >> position;
+        game.display_board();
+        std::cout << "Winner: " << game.get_winner() << std::endl;
         
-        game.mark_board(position);
-    }
+        std::cout << "Play again? (y/n): ";
+        std::cin >> play_again;
+    } while (play_again == 'y' || play_again == 'Y');
 
-	return 0;
+    return 0;
 }

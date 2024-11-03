@@ -1,41 +1,41 @@
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
+#define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "tic_tac_toe.h"
-#include <cassert>
-#include <iostream>
 
-TEST_CASE("Verify Test Configuration", "verification") {
-	REQUIRE(true == true);
-}
-
-void test_game_over_if_9_slots_are_selected() {
+TEST_CASE("Test first player set to X") {
     TicTacToe game;
     game.start_game("X");
+    REQUIRE(game.get_player() == "X");
+    REQUIRE(!game.game_over());
+}
 
-    // Marking the board
+TEST_CASE("Test first player set to O") {
+    TicTacToe game;
+    game.start_game("O");
+    REQUIRE(game.get_player() == "O");
+    REQUIRE(!game.game_over());
+}
+
+TEST_CASE("Test game over if 9 slots are selected.") {
+    TicTacToe game;
+    game.start_game("X");
+    for (int i = 1; i <= 9; ++i) {
+        game.mark_board(i);
+        REQUIRE(game.game_over() == (i == 9)); // Should be true only after the last move
+    }
+    REQUIRE(game.get_winner() == "C"); // Check for tie
+}
+
+TEST_CASE("Test win by first column") {
+    TicTacToe game;
+    game.start_game("X");
     game.mark_board(1);
-    assert(game.game_over() == false);
-    game.mark_board(2);
-    assert(game.game_over() == false);
-    game.mark_board(3);
-    assert(game.game_over() == false);
+    game.mark_board(2); // O
     game.mark_board(4);
-    assert(game.game_over() == false);
-    game.mark_board(5);
-    assert(game.game_over() == false);
-    game.mark_board(6);
-    assert(game.game_over() == false);
-    game.mark_board(7);
-    assert(game.game_over() == false);
-    game.mark_board(8);
-    assert(game.game_over() == false);
-    game.mark_board(9);
-    assert(game.game_over() == true); // All slots filled
-
-    std::cout << "Test passed: Game over when all slots are selected." << std::endl;
+    game.mark_board(5); // O
+    game.mark_board(7); // X wins
+    REQUIRE(game.game_over());
+    REQUIRE(game.get_winner() == "X");
 }
 
-int main() {
-    test_game_over_if_9_slots_are_selected();
-    return 0;
-}
+// Additional tests for other winning scenarios...
