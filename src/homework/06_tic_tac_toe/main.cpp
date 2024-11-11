@@ -1,31 +1,29 @@
-#include <iostream>
+#include "tic_tac_toe_manager.h"
 #include "tic_tac_toe.h"
+#include <iostream>
 
 int main() {
-    char play_again;
-    do {
-        std::string first_player;
-        do {
-            std::cout << "Choose first player (X or O): ";
-            std::cin >> first_player;
-        } while (first_player != "X" && first_player != "O");
+    TicTacToeManager manager;
 
-        TicTacToe game;
-        game.start_game(first_player);
-        while (!game.game_over()) {
-            game.display_board();
-            int position;
-            std::cout << "Player " << game.get_player() << ", enter your move (1-9): ";
-            std::cin >> position;
-            game.mark_board(position);
-        }
-        
-        game.display_board();
-        std::cout << "Winner: " << game.get_winner() << std::endl;
-        
-        std::cout << "Play again? (y/n): ";
-        std::cin >> play_again;
-    } while (play_again == 'y' || play_again == 'Y');
+    // Simulate playing 3 games
+    TicTacToe game1, game2, game3;
+    game1.play_game();
+    manager.save_game(game1);
+
+    game2.play_game();
+    manager.save_game(game2);
+
+    game3.play_game();
+    manager.save_game(game3);
+
+    // Display winner totals
+    int xWins, oWins, ties;
+    manager.get_winner_total(xWins, oWins, ties);
+    std::cout << "X Wins: " << xWins << ", O Wins: " << oWins << ", Ties: " << ties << std::endl;
+
+    // Display game history
+    std::cout << "\nGame History:\n";
+    manager.display_history();
 
     return 0;
 }
