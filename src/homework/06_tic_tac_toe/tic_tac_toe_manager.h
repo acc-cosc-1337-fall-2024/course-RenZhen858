@@ -1,24 +1,28 @@
-#ifndef TIC_TAC_TOE_MANAGER_H
-#define TIC_TAC_TOE_MANAGER_H
+#ifndef TICTACTOEMANAGER_H
+#define TICTACTOEMANAGER_H
 
-#include "tic_tac_toe.h"
+#include <memory>
 #include <vector>
-#include <string>
+#include <iostream>
+#include "tic_tac_toe.h"
 
 class TicTacToeManager {
-public:
-    TicTacToeManager();  // Constructor to initialize scores
-    void save_game(const TicTacToe& game);  // Save a completed game
-    void get_winner_total(int& xWins, int& oWins, int& ties) const;  // Get the total scores
-    void display_history() const;  // Display all the games in history
-
 private:
-    std::vector<TicTacToe> games;  // Vector to store all games
-    int x_win;  // Track X wins
-    int o_win;  // Track O wins
-    int ties;    // Track ties
+    std::vector<std::unique_ptr<TicTacToe>> games;  // Stores unique_ptr to games
 
-    void update_winner_count(const std::string& winner);  // Update scores based on winner
+public:
+    // Save a game (takes ownership of the game)
+    void save_game(std::unique_ptr<TicTacToe> game) {
+        games.push_back(std::move(game));
+    }
+
+    // Display all the games played
+    void display_all_games() const {
+        for (const auto& game : games) {
+            game->display_board();  // Dereferencing the unique_ptr to call member functions
+            std::cout << "-----------------------------------" << std::endl;
+        }
+    }
 };
 
-#endif // TIC_TAC_TOE_MANAGER_H
+#endif // TICTACTOEMANAGER_H

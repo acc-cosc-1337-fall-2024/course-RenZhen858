@@ -1,36 +1,60 @@
-#include "tic_tac_toe_4.h"
+#ifndef TICTACTOE4_H
+#define TICTACTOE4_H
 
-/*
-class function check_column_win
-Win by column if and return true if (each column index)
-0, 1,  2,  3 
-4, 5,  6,  7 
-8, 9, 10, 11 
-12,13,14, 15 
-else
-false
-*/
+#include "tic_tac_toe.h"
 
+class TicTacToe4 : public TicTacToe {
+public:
+    // Constructor initializes the base class with size 4
+    TicTacToe4() : TicTacToe(4) {}
 
+    // Check for a win in any column
+    bool check_column_win() const override {
+        for (int col = 0; col < size; ++col) {
+            for (int row = 0; row < size - 3; ++row) {
+                int idx = row * size + col;
+                if (pegs[idx] != " " && pegs[idx] == pegs[idx + size] &&
+                    pegs[idx] == pegs[idx + 2 * size] && pegs[idx] == pegs[idx + 3 * size]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
+    // Check for a win in any row
+    bool check_row_win() const override {
+        for (int row = 0; row < size; ++row) {
+            for (int col = 0; col < size - 3; ++col) {
+                int idx = row * size + col;
+                if (pegs[idx] != " " && pegs[idx] == pegs[idx + 1] &&
+                    pegs[idx] == pegs[idx + 2] && pegs[idx] == pegs[idx + 3]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-/*
-class function check_row_win
-Win by row if
-0, 1,  2,  3 are equal
-4, 5,  6,  7 are equal
-8, 9, 10, 11 are equal 
-12,13,14, 15 are equal
-*/
+    // Check for a diagonal win
+    bool check_diagonal_win() const override {
+        for (int row = 0; row < size - 3; ++row) {
+            for (int col = 0; col < size - 3; ++col) {
+                int idx = row * size + col;
+                if (pegs[idx] != " " && pegs[idx] == pegs[idx + size + 1] &&
+                    pegs[idx] == pegs[idx + 2 * (size + 1)] && pegs[idx] == pegs[idx + 3 * (size + 1)]) {
+                    return true;
+                }
+                idx = row * size + (col + 3);
+                if (pegs[idx] != " " && pegs[idx] == pegs[idx + size - 1] &&
+                    pegs[idx] == pegs[idx + 2 * (size - 1)] && pegs[idx] == pegs[idx + 3 * (size - 1)]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
 
+#endif // TICTACTOE4_H
 
-
-/*
-class function check_diagonal_win
-Win diagonally
-0, 1,  2,  3
-4, 5,  6,  7
-8, 9, 10, 11
-12,13,14, 15
-
-*/
